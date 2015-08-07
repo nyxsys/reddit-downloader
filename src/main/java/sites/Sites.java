@@ -12,13 +12,12 @@ import java.util.List;
  *
  * @author Jacob
  */
-public class SiteManager {
+public class Sites {
 
     public List<Site> sites;
 
-    public SiteManager() {
+    public Sites() {
         this.sites = new ArrayList<>();
-
     }
 
     private void setupSites() {
