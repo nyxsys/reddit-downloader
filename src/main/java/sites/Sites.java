@@ -7,6 +7,8 @@ package sites;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import org.reflections.Reflections;
 
 /**
  *
@@ -14,19 +16,19 @@ import java.util.List;
  */
 public class Sites {
 
-    public List<Site> sites;
+    public static List<Site> sites;
 
-    public Sites() {
-        this.sites = new ArrayList<>();
+    public static void initialize() {
+        sites = new ArrayList<>();
+        setupSites();
     }
 
-    private void setupSites() {
-        this.sites.add(new Site() {
-            @Override
-            public boolean fitsURLPattern(String url) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-        });
+    private static void setupSites() {
+        Reflections reflections = new Reflections("sites");
+
+        //Set<Class<? extends Object>> subTypes = reflections.getSubTypesOf(Object.class);
+        Set<Class<?>> annotated = reflections.getTypesAnnotatedWith(Site.class);
+        System.out.println(annotated);
     }
 
     /**

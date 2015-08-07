@@ -5,16 +5,15 @@
  */
 package sites;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-
 /**
  *
  * @author Jacob
  */
-@Retention(RetentionPolicy.RUNTIME)
-public @interface Site {
+@Site
+public class Imgur {
 
-    public boolean fitsURLPattern() default false;
+    public boolean fitsURLPattern(String url) {
+        return true;
+    }
 
 }
