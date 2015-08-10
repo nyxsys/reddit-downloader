@@ -5,15 +5,28 @@
  */
 package sites;
 
+import java.lang.annotation.Annotation;
+
 /**
  *
  * @author Jacob
  */
 @Site
-public class Imgur {
+public class Imgur implements Site {
 
-    public boolean fitsURLPattern(String url) {
-        return true;
+    @Override
+    public boolean fitsURLPattern() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Class<? extends Annotation> annotationType() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public String toString() {
+        return "Imgur Site Instance";
     }
 
 }

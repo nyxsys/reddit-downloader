@@ -5,9 +5,13 @@
  */
 package sites;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.reflections.Reflections;
 
 /**
@@ -28,7 +32,18 @@ public class Sites {
 
         //Set<Class<? extends Object>> subTypes = reflections.getSubTypesOf(Object.class);
         Set<Class<?>> annotated = reflections.getTypesAnnotatedWith(Site.class);
+        for (Class c : annotated) {
+            Constructor con;
+            try {
+                con = c.getConstructor();
+                Site site = (Site) con.newInstance();
+                sites.add(site);
+            } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+                Logger.getLogger(Sites.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         System.out.println(annotated);
+        System.out.println(sites);
     }
 
     /**
