@@ -39,11 +39,11 @@ public class ImgurAlbum implements Site {
             for (Element imageClass : els) {
                 Element imageTag = imageClass.getElementsByTag("a").get(0);
                 String imageUrl = imageTag.attr("href");
-                String urlCut = imageUrl.substring(2);
-                urls.add(urlCut);
+                urls.add("http:" + imageUrl);
             }
             //System.out.println(urls);
         } catch (Exception ex) {
+            ex.printStackTrace();
             return urls;
         }
         return urls;

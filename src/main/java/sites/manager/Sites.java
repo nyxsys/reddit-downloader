@@ -72,7 +72,7 @@ public class Sites {
     private static void downloadImage(String url) {
         String folder = "images";
         File dir = new File(folder);
-        if(!dir.exists()){
+        if (!dir.exists()) {
             dir.mkdirs();
         }
         try {
@@ -82,8 +82,10 @@ public class Sites {
             FileOutputStream out = (new FileOutputStream(new java.io.File(folder + File.separatorChar + Math.random() + ".jpg")));
             out.write(resultImageResponse.bodyAsBytes());
             out.close();
+            System.out.println("Downloaded Successful: " + url);
         } catch (Exception e) {
-            //Nope
+            System.out.println("Exception on url: " + url);
+            e.printStackTrace();
         }
     }
 }

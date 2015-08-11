@@ -39,7 +39,7 @@ public class Imgur implements Site {
             Element el = doc.getElementsByClass("image").get(0);
             Element imageTag = el.getElementsByTag("img").get(0);
             String imageUrl = imageTag.attr("src");
-            urls.add("http://" + imageUrl);
+            urls.add("http:" + imageUrl);
         } catch (Exception ex) {
             System.out.println("Exception on url: " + url);
             return urls;

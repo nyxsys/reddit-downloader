@@ -37,7 +37,7 @@ public class WorkerThread implements Runnable {
             } catch (InterruptedException ex) {
 
             }
-            System.out.println(Thread.currentThread().getName() + " Done downloading " + url);
+            //System.out.println(Thread.currentThread().getName() + " Done downloading " + url);
         }
 
     }

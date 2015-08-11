@@ -26,7 +26,7 @@ public class Main {
         Sites.initialize();
         long startTime = System.currentTimeMillis();
         Reddit reddit = new Reddit("My Super Cool App");
-        queue.addAll(reddit.getURLsFromSubreddit("doge", 200));
+        queue.addAll(reddit.getURLsFromSubreddit("cosplay", 200));
 
         int cores = Runtime.getRuntime().availableProcessors();
 
