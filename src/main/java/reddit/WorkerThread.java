@@ -1,3 +1,4 @@
+package reddit;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -5,6 +6,7 @@ import java.io.IOException;
 import java.util.concurrent.BlockingQueue;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
+import sites.manager.Sites;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -31,24 +33,13 @@ public class WorkerThread implements Runnable {
             String url = "";
             try {
                 url = queue.take();
-                downloadImage(url);
-            } catch (InterruptedException | IOException ex) {
+                Sites.downloadURL(url);
+            } catch (InterruptedException ex) {
 
             }
             System.out.println(Thread.currentThread().getName() + " Done downloading " + url);
         }
 
-    }
-
-    private void downloadImage(String url) throws FileNotFoundException, IOException {
-        //Open a URL Stream
-        Connection.Response resultImageResponse = Jsoup.connect(url)
-                .ignoreContentType(true).execute();
-
-        // output here
-        FileOutputStream out = (new FileOutputStream(new java.io.File(Math.random() + ".jpg")));
-        out.write(resultImageResponse.bodyAsBytes());  // resultImageResponse.body() is where the image's contents are.
-        out.close();
     }
 
 }

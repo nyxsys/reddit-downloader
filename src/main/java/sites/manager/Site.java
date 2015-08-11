@@ -3,18 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package sites;
+package sites.manager;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+import java.util.List;
 
 /**
  *
  * @author Jacob
  */
-@Retention(RetentionPolicy.RUNTIME)
-public @interface Site {
+public interface Site {
 
-    public boolean fitsURLPattern() default false;
+    public boolean fitsURLPattern(String url);
 
+    public List<String> findImages(String url);
 }

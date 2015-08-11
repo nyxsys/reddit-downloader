@@ -6,24 +6,23 @@
 package sites;
 
 import sites.manager.Site;
+import sites.manager.SitePlugin;
 import sites.manager.Sites;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import sites.manager.SitePlugin;
+import org.jsoup.select.Elements;
 
 /**
  *
  * @author Jacob
  */
-@SitePlugin
-public class Imgur implements Site {
+public class ImgurAlbum implements Site {
 
-    Pattern p = Pattern.compile(".*?\\:\\/\\/imgur\\.com(?!(\\/a\\/)).*?");
+    Pattern p = Pattern.compile(".*?\\:\\/\\/imgur\\.com\\/a\\/.*?");
 
     @Override
     public boolean fitsURLPattern(String url) {
@@ -36,12 +35,15 @@ public class Imgur implements Site {
         List<String> urls = new ArrayList<>();
         try {
             Document doc = Sites.getDocumentFromSite(url);
-            Element el = doc.getElementsByClass("image").get(0);
-            Element imageTag = el.getElementsByTag("img").get(0);
-            String imageUrl = imageTag.attr("src");
-            urls.add("http://" + imageUrl);
+            Elements els = doc.getElementsByClass("album-view-image-link");
+            for (Element imageClass : els) {
+                Element imageTag = imageClass.getElementsByTag("a").get(0);
+                String imageUrl = imageTag.attr("href");
+                String urlCut = imageUrl.substring(2);
+                urls.add(urlCut);
+            }
+            //System.out.println(urls);
         } catch (Exception ex) {
-            System.out.println("Exception on url: " + url);
             return urls;
         }
         return urls;

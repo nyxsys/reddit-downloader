@@ -1,4 +1,5 @@
 apply plugin: 'java'
+apply plugin: 'application'
 
 sourceCompatibility = '1.8'
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
@@ -10,8 +11,22 @@ sourceCompatibility = '1.8'
 // Note however, that you may define your own "run" and "debug" task if you
 // prefer. In this case NetBeans will not add these tasks but you may rely on
 // your own implementation.
+
+//Set global variable for main class
+project.ext.set("mainClassFile", "reddit.Main")
+
+mainClassName = project.mainClassFile
+
 if (!hasProperty('mainClass')) {
-    ext.mainClass = 'Main'
+    ext.mainClass = project.mainClassFile
+}
+
+if (!hasProperty('mainClassName')) {
+    ext.mainClassName = project.mainClassFile
+}
+
+run {
+    main = project.mainClassFile
 }
 
 repositories {

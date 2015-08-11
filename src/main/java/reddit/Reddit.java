@@ -51,7 +51,7 @@ public class Reddit {
                 String url = (String) ((JSONObject) jsonSub.get("data")).get("url");
                 urls.add(url);
             }
-            String after = (String)data.get("after");
+            String after = (String) data.get("after");
             System.out.println(after);
         } catch (IOException ex) {//Don't care
         } catch (ParseException pa) {//Don't care
