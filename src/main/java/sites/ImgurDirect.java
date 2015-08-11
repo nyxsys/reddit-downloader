@@ -1,7 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Imgur direct image link support for reddit downloader
  */
 package sites;
 
@@ -17,7 +15,7 @@ import java.util.regex.Pattern;
  */
 public class ImgurDirect implements Site {
 
-    Pattern p = Pattern.compile(".*?\\:\\/\\/i\\.imgur\\.com.*?");
+    Pattern p = Pattern.compile(".*?\\:\\/\\/i\\.imgur\\.com\\/.*?(?!.gifv)");
     
     @Override
     public boolean fitsURLPattern(String url) {

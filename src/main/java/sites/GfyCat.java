@@ -1,26 +1,28 @@
 /*
- * Imgur album support for reddit downloader
+ * Gfycat support for reddit downloader :)
  */
 package sites;
 
 import sites.manager.Site;
-import sites.manager.SitePlugin;
 import sites.manager.Sites;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
+import sites.manager.SitePlugin;
 
 /**
  *
  * @author Jacob
  */
-public class ImgurAlbum implements Site {
+@SitePlugin
+public class GfyCat implements Site {
 
-    Pattern p = Pattern.compile(".*?\\:\\/\\/imgur\\.com\\/a\\/.*?");
+    Pattern p = Pattern.compile(".*?\\:\\/\\/gfycat\\.com.*?");
+    Pattern imageUrl = Pattern.compile(".*?\\:*?\\/\\/gfycat\\.com\\/(\\S+?)");
 
     @Override
     public boolean fitsURLPattern(String url) {
@@ -32,16 +34,13 @@ public class ImgurAlbum implements Site {
     public List<String> findImages(String url) {
         List<String> urls = new ArrayList<>();
         try {
-            Document doc = Sites.getDocumentFromSite(url);
-            Elements els = doc.getElementsByClass("album-view-image-link");
-            for (Element imageClass : els) {
-                Element imageTag = imageClass.getElementsByTag("a").get(0);
-                String imageUrl = imageTag.attr("href");
-                urls.add("http:" + imageUrl);
+            Matcher m = imageUrl.matcher(url);
+            if (m.matches() && m.groupCount() > 0) {
+                String imageName = m.group(1);
+                urls.add("http://giant.gfycat.com/" + imageName + ".gif");
             }
-            //System.out.println(urls);
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (Exception e) {
+            //Nope
             return urls;
         }
         return urls;

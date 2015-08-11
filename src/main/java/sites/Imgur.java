@@ -1,7 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Imgur single image non direct link support for reddit downloader
  */
 package sites;
 
@@ -20,17 +18,17 @@ import sites.manager.SitePlugin;
  *
  * @author Jacob
  */
-@SitePlugin
+//@SitePlugin
 public class Imgur implements Site {
-
+    
     Pattern p = Pattern.compile(".*?\\:\\/\\/imgur\\.com(?!(\\/a\\/)).*?");
-
+    
     @Override
     public boolean fitsURLPattern(String url) {
         Matcher m = p.matcher(url);
-        return m.matches();
+        return m.matches() && !url.contains(".gifv");
     }
-
+    
     @Override
     public List<String> findImages(String url) {
         List<String> urls = new ArrayList<>();
@@ -46,10 +44,10 @@ public class Imgur implements Site {
         }
         return urls;
     }
-
+    
     @Override
     public String toString() {
         return "Imgur Site Instance";
     }
-
+    
 }

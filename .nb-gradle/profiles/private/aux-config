@@ -5,24 +5,30 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
       <group>
-        <file>file:/C:/Users/Jacob/Repos/reddit-downloader/src/main/java/sites/Site.java</file>
-        <file>file:/C:/Users/Jacob/Repos/reddit-downloader/src/main/java/JsoupTest.java</file>
-        <file>file:/C:/Users/Jacob/Repos/reddit-downloader/src/main/java/Main.java</file>
-        <file>file:/C:/Users/Jacob/Repos/reddit-downloader/src/main/java/sites/Sites.java</file>
-        <file>file:/C:/Users/Jacob/Repos/reddit-downloader/src/main/java/WorkerThread.java</file>
+        <file>file:/C:/Users/Jacob/Repos/reddit-downloader/src/main/java/reddit/WorkerThread.java</file>
+        <file>file:/C:/Users/Jacob/Repos/reddit-downloader/src/main/java/sites/Imgur.java</file>
+        <file>file:/C:/Users/Jacob/Repos/reddit-downloader/src/main/java/sites/ImgurDirect.java</file>
+        <file>file:/C:/Users/Jacob/Repos/reddit-downloader/src/main/java/reddit/Main.java</file>
+        <file>file:/C:/Users/Jacob/Repos/reddit-downloader/src/main/java/sites/manager/Site.java</file>
+        <file>file:/C:/Users/Jacob/Repos/reddit-downloader/src/main/java/sites/ImgurAlbum.java</file>
+        <file>file:/C:/Users/Jacob/Repos/reddit-downloader/src/main/java/sites/manager/Sites.java</file>
         <file>file:/C:/Users/Jacob/Repos/reddit-downloader/src/main/java/reddit/Reddit.java</file>
+        <file>file:/C:/Users/Jacob/Repos/reddit-downloader/src/main/java/sites/manager/SitePlugin.java</file>
       </group>
     </open-files>
     <editor-bookmarks lastBookmarkId="0" xmlns="http://www.netbeans.org/ns/editor-bookmarks/2"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
       <group>
-        <file>file:/C:/Users/Jacob/Repos/reddit-downloader/src/main/java/sites/Site.java</file>
+        <file>file:/C:/Users/Jacob/Repos/reddit-downloader/src/main/java/reddit/WorkerThread.java</file>
         <file>file:/C:/Users/Jacob/Repos/reddit-downloader/src/main/java/sites/Imgur.java</file>
-        <file>file:/C:/Users/Jacob/Repos/reddit-downloader/src/main/java/JsoupTest.java</file>
-        <file>file:/C:/Users/Jacob/Repos/reddit-downloader/src/main/java/Main.java</file>
-        <file>file:/C:/Users/Jacob/Repos/reddit-downloader/src/main/java/sites/Sites.java</file>
-        <file>file:/C:/Users/Jacob/Repos/reddit-downloader/src/main/java/WorkerThread.java</file>
+        <file>file:/C:/Users/Jacob/Repos/reddit-downloader/src/main/java/sites/ImgurDirect.java</file>
+        <file>file:/C:/Users/Jacob/Repos/reddit-downloader/src/main/java/reddit/Main.java</file>
+        <file>file:/C:/Users/Jacob/Repos/reddit-downloader/src/main/java/sites/manager/Site.java</file>
+        <file>file:/C:/Users/Jacob/Repos/reddit-downloader/src/main/java/sites/GfyCat.java</file>
+        <file>file:/C:/Users/Jacob/Repos/reddit-downloader/src/main/java/sites/ImgurAlbum.java</file>
+        <file>file:/C:/Users/Jacob/Repos/reddit-downloader/src/main/java/sites/manager/Sites.java</file>
         <file>file:/C:/Users/Jacob/Repos/reddit-downloader/src/main/java/reddit/Reddit.java</file>
+        <file>file:/C:/Users/Jacob/Repos/reddit-downloader/src/main/java/sites/manager/SitePlugin.java</file>
       </group>
     </open-files>
   </auxiliary>
