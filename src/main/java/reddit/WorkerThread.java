@@ -1,11 +1,7 @@
 package reddit;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.concurrent.BlockingQueue;
-import org.jsoup.Connection;
-import org.jsoup.Jsoup;
+import javax.swing.SwingUtilities;
 import sites.manager.Sites;
 
 /*
@@ -18,28 +14,27 @@ import sites.manager.Sites;
  * @author Jacob
  */
 public class WorkerThread implements Runnable {
-
-    private final BlockingQueue<String> queue;
-
-    public WorkerThread(BlockingQueue<String> queue) {
-
-        this.queue = queue;
-
+    
+    private final WorkerData data;
+    
+    public WorkerThread(WorkerData data) {
+        this.data = data;
     }
-
+    
     @Override
     public void run() {
-        while (!queue.isEmpty()) {
+        while (!data.queue.isEmpty()) {
             String url = "";
             try {
-                url = queue.take();
+                url = data.queue.take();
                 Sites.downloadURL(url);
+                data.downloadedCount.addAndGet(1);
+                Main.updateProgress(data);
             } catch (InterruptedException ex) {
-
             }
             //System.out.println(Thread.currentThread().getName() + " Done downloading " + url);
         }
-
+        
     }
-
+    
 }

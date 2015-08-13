@@ -18,7 +18,7 @@ import sites.manager.SitePlugin;
  *
  * @author Jacob
  */
-//@SitePlugin
+@SitePlugin
 public class Imgur implements Site {
     
     Pattern p = Pattern.compile(".*?\\:\\/\\/imgur\\.com(?!(\\/a\\/)).*?");

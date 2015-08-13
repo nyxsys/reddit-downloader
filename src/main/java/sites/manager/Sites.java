@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 import org.jsoup.Connection;
 import org.jsoup.nodes.Document;
 import org.reflections.Reflections;
+import reddit.Main;
 
 /**
  *
@@ -82,9 +83,9 @@ public class Sites {
             FileOutputStream out = (new FileOutputStream(new java.io.File(folder + File.separatorChar + Math.random() + ".jpg")));
             out.write(resultImageResponse.bodyAsBytes());
             out.close();
-            System.out.println("Downloaded Successful: " + url);
+            Main.output("Downloaded: " + url);
         } catch (Exception e) {
-            System.out.println("Exception on url: " + url);
+            Main.output("Failed: " + url);
             e.printStackTrace();
         }
     }

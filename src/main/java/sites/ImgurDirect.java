@@ -8,15 +8,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import sites.manager.SitePlugin;
 
 /**
  *
  * @author Jacob
  */
+@SitePlugin
 public class ImgurDirect implements Site {
 
     Pattern p = Pattern.compile(".*?\\:\\/\\/i\\.imgur\\.com\\/.*?(?!.gifv)");
-    
+
     @Override
     public boolean fitsURLPattern(String url) {
         Matcher m = p.matcher(url);

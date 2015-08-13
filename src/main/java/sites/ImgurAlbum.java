@@ -18,6 +18,7 @@ import org.jsoup.select.Elements;
  *
  * @author Jacob
  */
+@SitePlugin
 public class ImgurAlbum implements Site {
 
     Pattern p = Pattern.compile(".*?\\:\\/\\/imgur\\.com\\/a\\/.*?");
