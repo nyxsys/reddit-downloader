@@ -1,7 +1,5 @@
 package reddit;
 
-import java.util.concurrent.BlockingQueue;
-import javax.swing.SwingUtilities;
 import sites.manager.Sites;
 
 /*
@@ -14,13 +12,13 @@ import sites.manager.Sites;
  * @author Jacob
  */
 public class WorkerThread implements Runnable {
-    
+
     private final WorkerData data;
-    
+
     public WorkerThread(WorkerData data) {
         this.data = data;
     }
-    
+
     @Override
     public void run() {
         while (!data.queue.isEmpty()) {
@@ -34,7 +32,7 @@ public class WorkerThread implements Runnable {
             }
             //System.out.println(Thread.currentThread().getName() + " Done downloading " + url);
         }
-        
+
     }
-    
+
 }
