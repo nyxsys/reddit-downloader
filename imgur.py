@@ -7,12 +7,12 @@ ImgurImage = namedtuple('ImgurImage', 'url filename')
 def getImage(submission, targetSubreddit):
     image = findImage(targetSubreddit, submission)
     if image != None:
-        return downloadImage(targetSubreddit, image.url, image.filename)
+        return downloadImage(targetSubreddit, submission, image.url, image.filename)
     else:
         return False
 
-def downloadImage(targetSubreddit, imageUrl, localFileName):
-    filedir = "downloads" + "/" + targetSubreddit + "/"
+def downloadImage(targetSubreddit, submission, imageUrl, localFileName):
+    filedir = "downloads" + "/" + targetSubreddit + "/" + submission.author + "/"
     filepath = filedir + localFileName
     try:
         if os.path.isfile(filepath):
@@ -34,7 +34,6 @@ def downloadImage(targetSubreddit, imageUrl, localFileName):
 def findImage(targetSubreddit, submission):
     imgurUrlPattern = re.compile(r'(http://i.imgur.com/(.*))(\?.*)?')
     imageUrl = None
-
     try:
         if "imgur.com/" not in submission.url:
             return

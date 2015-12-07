@@ -4,7 +4,7 @@ Initial stages of new python api caller
 import json, urllib2, time
 from collections import namedtuple
 
-Submission = namedtuple('Submission', 'url id score')
+Submission = namedtuple('Submission', 'url id score author')
 after = None
 
 def get_json(subreddit, after=None, feed_type="hot"):
@@ -24,6 +24,7 @@ def get_submissions(subreddit, count, feed_type="hot"):
 	while(len(submissions) < count):
 		json = get_json(subreddit, after, feed_type)
 		for submission in json["data"]["children"]:
-			submissions.append(Submission(submission["data"]["url"], submission["data"]["id"], submission["data"]["score"]))
+			submissions.append(Submission(submission["data"]["url"],
+			submission["data"]["id"], submission["data"]["score"], submission["data"]["author"]))
 		after = json["data"]["after"]
 	return submissions

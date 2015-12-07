@@ -1,5 +1,3 @@
-#
-
 from multiprocessing import Process, Queue, current_process, freeze_support, cpu_count
 import time, random, os, imgur, datetime, sys, reddit, logging
 
