@@ -5,7 +5,24 @@
 #
 
 from multiprocessing import Process, Queue, current_process, freeze_support, cpu_count
-import time, random, os, imgur, datetime, sys, reddit
+import time, random, os, imgur, datetime, sys, reddit, logging
+
+#Diable logging from requests
+logging.getLogger("requests").setLevel(logging.WARNING)
+
+logdir = "logs"
+#Set up own logging
+if not os.path.exists(logdir):
+    os.makedirs(logdir)
+logfilename = logdir + "/" + datetime.datetime.now().strftime('redditd_%H_%M_%S_%d_%m_%Y.log')
+logging.basicConfig(
+    filename=logfilename,
+    format='%(levelname)s:%(message)s',
+    level=logging.INFO
+)
+#logging.debug('This message should appear on the console')
+#logging.info('So should this')
+#logging.warning('And this, too')
 
 #
 # Function run by worker processes
@@ -30,7 +47,7 @@ def getImgurImages(targetSubreddit, limit=25, min_score=0):
     task_queue = Queue()
 
     #Print and make directory for files
-    print "[ --- Searching", limit, "newest posts from", targetSubreddit, "for imgur files --- ]"
+    logging.info("[ --- Searching %s newest posts from %s for imgur files --- ]", limit, targetSubreddit)
 
     # Start worker processes
     for i in range(NUMBER_OF_PROCESSES):
@@ -62,4 +79,4 @@ if __name__ == '__main__':
     start_time = time.time()
     freeze_support()
     main()
-    print("--- %s seconds ---" % (time.time() - start_time))
+    logging.info("--- %s seconds ---", (time.time() - start_time))
