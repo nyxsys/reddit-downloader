@@ -2,10 +2,14 @@ import datetime, re, requests, glob, os, urllib
 from bs4 import BeautifulSoup
 
 def downloadImage(targetSubreddit, imageUrl, localFileName):
+    filedir = "downloads" + "/" + targetSubreddit + "/"
+    filepath = filedir + localFileName
     try:
-        if not os.path.isfile(targetSubreddit +"/"+ localFileName):
+        if not os.path.isfile(filepath):
+            if not os.path.exists(filedir):
+                os.makedirs(filedir)
             testfile = urllib.URLopener()
-            testfile.retrieve(imageUrl, targetSubreddit + "/" + localFileName)
+            testfile.retrieve(imageUrl, filepath)
     except Exception as exception:
         print exception
 

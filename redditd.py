@@ -31,8 +31,6 @@ def getImgurImages(targetSubreddit, limit=25, min_score=0):
 
     #Print and make directory for files
     print "[ --- Searching", limit, "newest posts from", targetSubreddit, "for imgur files --- ]"
-    if not os.path.exists(targetSubreddit):
-        os.makedirs(targetSubreddit)
 
     # Start worker processes
     for i in range(NUMBER_OF_PROCESSES):
