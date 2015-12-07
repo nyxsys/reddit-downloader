@@ -1,29 +1,43 @@
-import datetime, re, requests, urllib, glob, os, logging
+import datetime, re, requests, urllib, glob, os, logging, redditd, random, string
 from bs4 import BeautifulSoup
+from collections import namedtuple
+
+ImgurImage = namedtuple('ImgurImage', 'url filename')
+
+def getImage(submission, targetSubreddit):
+    image = findImage(targetSubreddit, submission)
+    if image != None:
+        return downloadImage(targetSubreddit, image.url, image.filename)
+    else:
+        return False
 
 def downloadImage(targetSubreddit, imageUrl, localFileName):
     filedir = "downloads" + "/" + targetSubreddit + "/"
     filepath = filedir + localFileName
     try:
-        if not os.path.isfile(filepath):
+        if os.path.isfile(filepath):
+            return True
+        else:
             if not os.path.exists(filedir):
                 os.makedirs(filedir)
             response = urllib.urlopen(imageUrl)
             if(response.getcode() == 200):
                 urllib.urlretrieve(imageUrl, filepath)
+                return True
+            else:
+                return False
     except Exception as exception:
         logging.error(exception)
+        return False
 
 #Worker process function
-def findImage(submission, min_score, targetSubreddit):
+def findImage(targetSubreddit, submission):
     imgurUrlPattern = re.compile(r'(http://i.imgur.com/(.*))(\?.*)?')
     imageUrl = None
 
     try:
         if "imgur.com/" not in submission.url:
             return
-        if submission.score < min_score:
-            return # skip submissions that haven't even reached 100 (thought this should be rare if we're collecting the "hot" submission)
 
         # This is an album submission.
         if 'http://imgur.com/a/' in submission.url:
@@ -32,7 +46,7 @@ def findImage(submission, min_score, targetSubreddit):
                 response = requests.get(submission.url) # download the image's page
                 #If we don't get a 200, don't do anything
                 if(response.status_code != 200):
-                    return
+                    return None
                 htmlSource = response.text
 
                 soup = BeautifulSoup(htmlSource, "html.parser")
@@ -43,8 +57,8 @@ def findImage(submission, min_score, targetSubreddit):
                         imageFile = imageUrl[imageUrl.rfind('/') + 1:imageUrl.rfind('?')]
                     else:
                         imageFile = imageUrl[imageUrl.rfind('/') + 1:]
-                    localFileName = '%s_%s_album_%s_imgur_%s' % (targetSubreddit, submission.id, albumId, imageFile)
-                    downloadImage(targetSubreddit, 'http:' + match['href'], localFileName)
+                    localFileName = '%s_%s_album_None_imgur_%s' % (targetSubreddit, submission.id, imgurFilename)
+                    return ImgurImage(imageUrl, localFileName)
             except Exception as exception:
                 logging.error("%s at url: %s", exception, submission.url)
 
@@ -62,7 +76,7 @@ def findImage(submission, min_score, targetSubreddit):
                     response = requests.get(submission.url) # download the image's page
                     #If we don't get a 200, don't do anything
                     if(response.status_code != 200):
-                        return
+                        return None
                     htmlSource = response.text
                     soup = BeautifulSoup(htmlSource, "html.parser")
                     imageUrl = soup.select('.controls')[0].find_all('a')[0]['href']
@@ -72,7 +86,7 @@ def findImage(submission, min_score, targetSubreddit):
                         imageUrl = 'http:' + imageUrl
 
                 localFileName = '%s_%s_album_None_imgur_%s' % (targetSubreddit, submission.id, imgurFilename)
-                downloadImage(targetSubreddit, imageUrl, localFileName)
+                return ImgurImage(imageUrl, localFileName)
             except Exception as exception:
                 logging.error("%s at url: %s", exception, submission.url)
 
@@ -82,7 +96,7 @@ def findImage(submission, min_score, targetSubreddit):
                 response = requests.get(submission.url) # download the image's page
                 #If we don't get a 200, don't do anything
                 if(response.status_code != 200):
-                    return
+                    return None
                 htmlSource = response.text
                 soup = BeautifulSoup(htmlSource, "html.parser")
                 imageUrl = soup.select('.post-image')[0].find_all('img')[0]['src']
@@ -97,8 +111,9 @@ def findImage(submission, min_score, targetSubreddit):
                     imageFile = imageUrl[imageUrl.rfind('/') + 1:]
 
                 localFileName = '%s_%s_album_None_imgur_%s' % (targetSubreddit, submission.id, imageFile)
-                downloadImage(targetSubreddit, imageUrl, localFileName)
+                return ImgurImage(imageUrl, localFileName)
             except Exception as exception:
                 logging.error("%s at url: %s", exception, submission.url)
     except (KeyboardInterrupt, SystemExit):
             print "Exiting..."
+            exit(0)

@@ -1,8 +1,4 @@
 #
-# Now uses task queue :)
-# Removed PRAW requirement
-# NEED to fix process shutdown issue (Tasks stay running after ctrl-c)
-#
 
 from multiprocessing import Process, Queue, current_process, freeze_support, cpu_count
 import time, random, os, imgur, datetime, sys, reddit, logging
@@ -20,63 +16,28 @@ logging.basicConfig(
     format='%(levelname)s:%(message)s',
     level=logging.INFO
 )
-#logging.debug('This message should appear on the console')
-#logging.info('So should this')
-#logging.warning('And this, too')
 
-#
-# Function run by worker processes
-#
-def worker(input, output):
-    for args in iter(input.get, 'STOP'):
-        doWork(args)
-#
-# Function used to calculate result
-#
-def doWork(args):
-    try:
-        imgur.findImage(*args)
-    except KeyboardInterrupt:
-        exit(0)
-
-def getImgurImages(targetSubreddit, limit=25, min_score=0):
-    NUMBER_OF_PROCESSES = cpu_count()
-    PROCESSES = []
-
-    # Create queues
-    task_queue = Queue()
-
-    #Print and make directory for files
-    logging.info("[ --- Searching %s newest posts from %s for imgur files --- ]", limit, targetSubreddit)
-
-    # Start worker processes
-    for i in range(NUMBER_OF_PROCESSES):
-        process = Process(target=worker, args=(task_queue, None))
-        PROCESSES.append(process)
-        process.start()
-
-    for submission in reddit.get_submissions(targetSubreddit, limit):
-        task_queue.put((submission, min_score, targetSubreddit))
-
-    # Tell child processes to stop
-    for i in range(NUMBER_OF_PROCESSES):
-        task_queue.put('STOP')
-
-    # Wait for workers
-    for i in range(NUMBER_OF_PROCESSES):
-        PROCESSES[i].join()
+def getImgurImages(targetSubreddit, limit=25, feed_type="hot"):
+    logging.info("[ --- Searching %s most recent %s posts from %s for imgur files --- ]", limit, feed_type, targetSubreddit)
+    count = limit
+    while count > 0:
+        for submission in reddit.get_submissions(targetSubreddit, count, feed_type):
+            if(imgur.getImage(submission, targetSubreddit)):
+                count -= 1
 
 def main():
-    if len(sys.argv) == 3:
+    if len(sys.argv) >= 3:
         targetSubreddit = sys.argv[1]
         limit = int(sys.argv[2])
-        getImgurImages(targetSubreddit, limit)
+        feed_type = "hot"
+        if(len(sys.argv) > 3):
+            feed_type = sys.argv[3]
+        getImgurImages(targetSubreddit, limit, feed_type)
     else:
-        print "Usage: python redditd.py (targetSubreddit) (Limit)"
+        print "Usage: python redditd.py (targetSubreddit) (Limit) (new/hot/rising)"
         exit(0)
 
 if __name__ == '__main__':
     start_time = time.time()
-    freeze_support()
     main()
     logging.info("--- %s seconds ---", (time.time() - start_time))
