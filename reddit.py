@@ -12,9 +12,9 @@ def get_json(subreddit, after=None):
 	opener.addheaders = [('User-agent', 'Cool Cat App')]
 	url = ""
 	if after == None:
-		url = "https://www.reddit.com/r/"+ subreddit +"/.json"
+		url = "https://www.reddit.com/r/"+ subreddit +"/new.json"
 	else:
-		url = "https://www.reddit.com/r/"+ subreddit +"/.json?after=" + after
+		url = "https://www.reddit.com/r/"+ subreddit +"/new.json?after=" + after
 	return json.load(opener.open(url))
 
 def get_submissions(subreddit, count):
@@ -25,6 +25,5 @@ def get_submissions(subreddit, count):
 		for submission in json["data"]["children"]:
 			submissions.append(Submission(submission["data"]["url"], submission["data"]["id"], submission["data"]["score"]))
 		after = json["data"]["after"]
-	print len(submissions)
+	#print len(submissions)
 	return submissions
-	

@@ -55,7 +55,7 @@ def main():
         limit = int(sys.argv[2])
         getImgurImages(targetSubreddit, limit)
     else:
-        print "Nope"
+        print "Usage: python redditd.py (targetSubreddit) (Limit)"
         exit(0)
 
 if __name__ == '__main__':

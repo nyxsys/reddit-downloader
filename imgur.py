@@ -24,9 +24,10 @@ def findImage(submission, min_score, targetSubreddit):
         if submission.score < min_score:
             return # skip submissions that haven't even reached 100 (thought this should be rare if we're collecting the "hot" submission)
 
+        # This is an album submission.
         if 'http://imgur.com/a/' in submission.url:
             try:
-                # This is an album submission.
+
                 albumId = submission.url[len('http://imgur.com/a/'):]
                 htmlSource = requests.get(submission.url).text
 
@@ -41,11 +42,12 @@ def findImage(submission, min_score, targetSubreddit):
                     localFileName = '%s_%s_album_%s_imgur_%s' % (targetSubreddit, submission.id, albumId, imageFile)
                     downloadImage(targetSubreddit, 'http:' + match['href'], localFileName)
             except Exception as exception:
+                print "Exception url: %s" % submission.url
                 print exception
 
+        # The URL is a direct link to the image.
         elif 'http://i.imgur.com/' in submission.url:
             try:
-                # The URL is a direct link to the image.
                 mo = imgurUrlPattern.search(submission.url) # using regex here instead of BeautifulSoup because we are pasing a url, not html
 
                 imgurFilename = mo.group(2)
@@ -65,14 +67,15 @@ def findImage(submission, min_score, targetSubreddit):
                 localFileName = '%s_%s_album_None_imgur_%s' % (targetSubreddit, submission.id, imgurFilename)
                 downloadImage(targetSubreddit, imageUrl, localFileName)
             except Exception as exception:
+                print "Exception direct link url: %s" % submission.url
                 print exception
 
+        # This is an Imgur page with a single image.
         elif 'http://imgur.com/' in submission.url:
             try:
-                # This is an Imgur page with a single image.
                 htmlSource = requests.get(submission.url).text # download the image's page
                 soup = BeautifulSoup(htmlSource, "html.parser")
-                imageUrl = soup.select('.image')[0].find_all('img')[0]['src']
+                imageUrl = soup.select('.post-image')[0].find_all('img')[0]['src']
                 if imageUrl.startswith('//'):
                     # if no schema is supplied in the url, prepend 'http:' to it
                     imageUrl = 'http:' + imageUrl
@@ -86,6 +89,7 @@ def findImage(submission, min_score, targetSubreddit):
                 localFileName = '%s_%s_album_None_imgur_%s' % (targetSubreddit, submission.id, imageFile)
                 downloadImage(targetSubreddit, imageUrl, localFileName)
             except Exception as exception:
-                print exception, "for", imageUrl
+                print "Exception url: %s" % submission.url
+                print exception
     except (KeyboardInterrupt, SystemExit):
             print "Exiting..."
