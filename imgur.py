@@ -12,11 +12,11 @@ def getImage(submission, targetSubreddit):
         return False
 
 def downloadImage(targetSubreddit, submission, imageUrl, localFileName):
-    filedir = "downloads" + "/" + targetSubreddit + "/" # + submission.author + "/"
+    filedir = "downloads" + "/" + targetSubreddit + "/" + str(submission.author) + "/"
     filepath = filedir + localFileName
     try:
         if os.path.isfile(filepath):
-            logging.info("Found duplicate at %s", filepath)
+            #logging.info("Found duplicate at %s", filepath)
             return True
         else:
             if not os.path.exists(filedir):

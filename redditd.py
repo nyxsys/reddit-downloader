@@ -18,13 +18,17 @@ logging.basicConfig(
 def getImgurImages(targetSubreddit, limit=25, feed_type="hot"):
     logging.info("[ --- Searching %s most recent %s posts from %s for imgur files --- ]", limit, feed_type, targetSubreddit)
     count = limit
+    daysAgo = 0
+    pool = Pool(processes=(cpu_count()-1))              # start 4 worker processes
     while count > 0:
-        submissions = reddit.get_submissions(targetSubreddit, count, feed_type)
-        pool = Pool(processes=(cpu_count()-1))              # start 4 worker processes
-        results = pool.map(getImageWrapper, itertools.izip(submissions, itertools.repeat(targetSubreddit)))
+        #submissions = reddit.get_submissions(targetSubreddit, count, feed_type)
+        submissions = reddit.getSubmissionsFromDaysAgo(targetSubreddit, daysAgo, limit, feed_type)
+        results = pool.imap(getImageWrapper, itertools.izip(submissions, itertools.repeat(targetSubreddit)))
         for result in results:
             if result:
                 count -= 1
+        daysAgo+=1
+    pool.close()
 
 def getImageWrapper(args):
     return imgur.getImage(*args)
