@@ -22,7 +22,7 @@ def getImgurImages(targetSubreddit, limit=25, feed_type="hot"):
     pool = Pool(processes=(cpu_count()-1))              # start 4 worker processes
     while count > 0:
         #submissions = reddit.get_submissions(targetSubreddit, count, feed_type)
-        submissions = reddit.getSubmissionsFromDaysAgo(targetSubreddit, daysAgo, limit, feed_type)
+        submissions = reddit.getSubmissionsFromDaysAgo(targetSubreddit, daysAgo, count, feed_type)
         results = pool.imap(getImageWrapper, itertools.izip(submissions, itertools.repeat(targetSubreddit)))
         for result in results:
             if result:
