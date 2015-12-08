@@ -12,10 +12,11 @@ def getImage(submission, targetSubreddit):
         return False
 
 def downloadImage(targetSubreddit, submission, imageUrl, localFileName):
-    filedir = "downloads" + "/" + targetSubreddit + "/" + submission.author + "/"
+    filedir = "downloads" + "/" + targetSubreddit + "/" # + submission.author + "/"
     filepath = filedir + localFileName
     try:
         if os.path.isfile(filepath):
+            logging.info("Found duplicate at %s", filepath)
             return True
         else:
             if not os.path.exists(filedir):
@@ -36,7 +37,7 @@ def findImage(targetSubreddit, submission):
     imageUrl = None
     try:
         if "imgur.com/" not in submission.url:
-            return
+            return None
 
         # This is an album submission.
         if 'http://imgur.com/a/' in submission.url:
@@ -88,6 +89,7 @@ def findImage(targetSubreddit, submission):
                 return ImgurImage(imageUrl, localFileName)
             except Exception as exception:
                 logging.error("%s at url: %s", exception, submission.url)
+                return None
 
         # This is an Imgur page with a single image.
         elif 'http://imgur.com/' in submission.url:
@@ -113,6 +115,7 @@ def findImage(targetSubreddit, submission):
                 return ImgurImage(imageUrl, localFileName)
             except Exception as exception:
                 logging.error("%s at url: %s", exception, submission.url)
+                return None
     except (KeyboardInterrupt, SystemExit):
             print "Exiting..."
             exit(0)

@@ -8,15 +8,18 @@ Submission = namedtuple('Submission', 'url id score author')
 after = None
 
 def get_json(subreddit, after=None, feed_type="hot"):
-	#time.sleep(2)
-	opener = urllib2.build_opener()
-	opener.addheaders = [('User-agent', 'Cool Cat App')]
-	url = ""
-	if after == None:
-		url = "https://www.reddit.com/r/"+ subreddit +"/%s.json" % feed_type
-	else:
-		url = "https://www.reddit.com/r/"+ subreddit +"/%s.json?after=%s" % (feed_type, after)
-	return json.load(opener.open(url))
+	try:
+		#time.sleep(2)
+		opener = urllib2.build_opener()
+		opener.addheaders = [('User-agent', 'Cool Cat App')]
+		url = ""
+		if after == None:
+			url = "https://www.reddit.com/r/"+ subreddit +"/%s.json" % feed_type
+		else:
+			url = "https://www.reddit.com/r/"+ subreddit +"/%s.json?after=%s" % (feed_type, after)
+		return json.load(opener.open(url))
+	except Exception as exception:
+		logging.error("%s at url: %s", exception, url)
 
 def get_submissions(subreddit, count, feed_type="hot"):
 	global after

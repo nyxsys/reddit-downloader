@@ -1,8 +1,8 @@
-from multiprocessing import Process, Queue, current_process, freeze_support, cpu_count
-import time, random, os, imgur, datetime, sys, reddit, logging
+from multiprocessing import Process, Queue, current_process, freeze_support, cpu_count, Pool
+import time, random, os, imgur, datetime, sys, reddit, logging, itertools
 
 #Diable logging from requests
-logging.getLogger("requests").setLevel(logging.WARNING)
+logging.getLogger("requests").setLevel(logging.ERROR)
 
 logdir = "logs"
 #Set up own logging
@@ -19,9 +19,15 @@ def getImgurImages(targetSubreddit, limit=25, feed_type="hot"):
     logging.info("[ --- Searching %s most recent %s posts from %s for imgur files --- ]", limit, feed_type, targetSubreddit)
     count = limit
     while count > 0:
-        for submission in reddit.get_submissions(targetSubreddit, count, feed_type):
-            if(imgur.getImage(submission, targetSubreddit)):
+        submissions = reddit.get_submissions(targetSubreddit, count, feed_type)
+        pool = Pool(processes=(cpu_count()-1))              # start 4 worker processes
+        results = pool.map(getImageWrapper, itertools.izip(submissions, itertools.repeat(targetSubreddit)))
+        for result in results:
+            if result:
                 count -= 1
+
+def getImageWrapper(args):
+    return imgur.getImage(*args)
 
 def main():
     if len(sys.argv) >= 3:
@@ -37,5 +43,6 @@ def main():
 
 if __name__ == '__main__':
     start_time = time.time()
+    freeze_support()
     main()
     logging.info("--- %s seconds ---", (time.time() - start_time))
