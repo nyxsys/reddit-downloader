@@ -12,7 +12,8 @@ def getImage(submission, targetSubreddit):
         return False
 
 def downloadImage(targetSubreddit, submission, imageUrl, localFileName):
-    filedir = "downloads" + "/" + targetSubreddit + "/" + str(submission.author) + "/"
+    filedir = "downloads" + "/" + targetSubreddit + "/"
+    #filedir += str(submission.author) + "/"
     filepath = filedir + localFileName
     try:
         if os.path.isfile(filepath):
