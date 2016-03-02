@@ -18,10 +18,8 @@ def main():
     print soup2.title
     print soup2.find_all(class_="ProfileCardStats-statValue")
     return 0
-    if __name__ == "__main__":
-        start_time = time.time()
-        exit_code = main()
-        if(exit_code == 0):
-            print "--- Completed in %d seconds ---" % (time.time() - start_time) 
-            
-main()
+if __name__ == "__main__":
+    start_time = time.time()
+    exit_code = main()
+    if(exit_code == 0):
+        print "--- Completed in %d seconds ---" % (time.time() - start_time) 
